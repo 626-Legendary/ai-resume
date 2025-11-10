@@ -1,7 +1,7 @@
 import React from 'react'
 import ChromaGrid from '../ui/chroma-grid.jsx'
 import { Linkedin } from "lucide-react";
-  
+
 
 import TextType from '../ui/text-type.jsx';
 
@@ -10,7 +10,7 @@ const Team = () => {
 
   const items = [
     {
-      image: "/team/Zexiang.jpg",
+      image: "/team/zexiang.jpg",
       title: "Zexiang Zhang",
       subtitle: "Full Stack Engineer",
       handle: "@Trevor",
@@ -29,7 +29,7 @@ const Team = () => {
       url: "https://www.linkedin.com/in/yanfeng-tan/"
     },
     {
-      image: "/team/Yanyi.jpg",
+      image: "/team/yanyi.jpg",
       title: "Yanyi He",
       subtitle: "Machine Learning Engineer",
       handle: "@Ashley",
