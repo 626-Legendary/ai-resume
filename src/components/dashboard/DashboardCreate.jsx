@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import {
   Breadcrumb,
@@ -48,8 +50,14 @@ const DashboardCreate = () => {
       return acc;
     }, {});
 
-    // 尝试从 localStorage 恢复已保存的简历
+    // 检查浏览器环境并尝试从 localStorage 恢复已保存的简历
     try {
+      // 检查 localStorage 是否可用
+      if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+        console.warn('localStorage is not available in this environment');
+        return defaults;
+      }
+
       const raw = localStorage.getItem('ai-resume-data');
       if (raw) {
         const parsed = JSON.parse(raw);
@@ -271,11 +279,18 @@ const DashboardCreate = () => {
 
       // persist to localStorage
       try {
-        localStorage.setItem('ai-resume-data', JSON.stringify(finalData));
-        console.log("Submitting final CV data:", finalData);
-        alert("CV Data saved locally. You can now print or download.");
+        // 检查 localStorage 是否可用
+        if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+          localStorage.setItem('ai-resume-data', JSON.stringify(finalData));
+          console.log("Submitting final CV data:", finalData);
+          alert("CV Data saved locally. You can now print or download.");
+        } else {
+          console.warn('localStorage is not available, but data can still be printed');
+          alert("Your resume is ready to print!");
+        }
       } catch (e) {
         console.error('Failed to save resume to localStorage', e);
+        alert("Note: Data could not be saved locally, but you can still print your resume.");
       }
 
       // 生成 HTML 并调用打印
