@@ -12,7 +12,7 @@ const FAQ = () => {
         <section className='mx-auto px-6 py-20 lg:py-30 border-b border-gray-800 text-center'>
             <div className='max-w-4xl mx-auto px-4 sm:px-6 lg:px-8'>
                 {/* Title Section */}
-                <header className='text-center mb-16'>
+                <header className='text-center mb-8'>
                     <h2 className='text-4xl sm:text-5xl font-extrabold tracking-tight mb-4'>
                         Frequently Asked Questions
                     </h2>
@@ -34,10 +34,10 @@ const FAQ = () => {
                             Why should I use an AI resume builder tool?
                         </AccordionTrigger>
                         <AccordionContent className="text-base text-gray-300 space-y-4 pt-2 pb-4">
-                            <p>
+                            <p className='text-left'>
                                 An AI resume builder helps you craft the most optimized resume for your dream job. Our AI is designed to adopt the phrasing that hiring managers are looking for, increasing your chances of standing out.
                             </p>
-                            <p>
+                            <p className='text-left'>
                                 Key features include advanced processing capabilities and an intuitive UI designed for both beginners and experts.
                             </p>
                         </AccordionContent>
@@ -52,7 +52,7 @@ const FAQ = () => {
                             Will employers know I used AI to write my resume?
                         </AccordionTrigger>
                         <AccordionContent className="text-base text-gray-300 pt-2 pb-4">
-                            <p>
+                            <p className='text-left'>
                                 Employers may guess you used AI, but this is generally not an issue. What they truly care about is a well-written resume that accurately showcases your skills and experience. A top-tier resume tailored to their needs speaks volumes.
                             </p>
                         </AccordionContent>
@@ -66,7 +66,7 @@ const FAQ = () => {
                             How does Resumate tailor my resume to a specific job description?
                         </AccordionTrigger>
                         <AccordionContent className="text-base text-gray-300 pt-2 pb-4">
-                            <p>
+                            <p className='text-left'>
                                 Resumate uses AI Keyword Targeting to scan the job description for key terms and seamlessly integrates them into your resume. This gives your resume the right focus without keyword stuffing and boosts its ATS compatibility.
                             </p>
                         </AccordionContent>
@@ -81,7 +81,7 @@ const FAQ = () => {
                             Can I use the AI to optimize an existing resume?
                         </AccordionTrigger>
                         <AccordionContent className="text-base text-gray-300 pt-2 pb-4">
-                            <p>
+                            <p className='text-left'>
                                 Absolutely. You can upload your current resume, share your career goals and target job, and let our AI refine everything to boost your document's impact and Applicant Tracking System (ATS) compatibility.
                             </p>
                         </AccordionContent>

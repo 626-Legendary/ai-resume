@@ -38,7 +38,7 @@ const Hero = () => {
 
       {/* 描述：max-w-3xl 更紧凑，文本大小保持不变 */}
       <p className='sm:text-xs md:text-lg text-gray-400 mb-10 max-w-3xl mx-auto'>
-        Community-driven resume builder for software engineers with AI-powered optimization. Own your data, customize every template, and land your dream job.
+        Harnessing advanced LLMs, our platform analyzes job postings to optimize your resume, fully match job requirements, and make you a highly competitive candidate.
       </p>
 
       {/* 按钮组：使用 Flex 布局居中，并在移动端堆叠或居中 */}

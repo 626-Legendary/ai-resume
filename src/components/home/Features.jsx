@@ -17,20 +17,20 @@ const Features = () => {
             <div className="p-3 rounded-full bg-indigo-700/50 mr-4">
               <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c1.657 0 3 .895 3 2s-1.343 2-3 2a3 3 0 00-3 3v2m8-3a7 7 0 10-14 0h14z"></path></svg>
             </div>
-            <h3 className="text-xl font-semibold">AI Keyword Targeting</h3>
+            <h3 className="text-xl font-semibold">AI Keyword Insight</h3>
           </div>
-          <p className="text-gray-400 mb-6">
-            Instantly improve your chances of being selected for an interview by optimizing your resume with keywords from the job description.
+          <p className="text-gray-400 mb-6 text-justify">
+            Our AI extracts the most important keywords from job descriptions, evaluates their relevance across your industry, and fine-tunes your resume to maximize alignment with recruiter expectations and increase your interview potential.
           </p>
 
 
           <div className="bg-gray-800 p-6 rounded-lg shadow-xl">
-            <div className="text-sm font-medium text-green-400 mb-3">
-              Great work! You're ranking well for these keywords in the job description:
+            <div className="text-sm font-medium text-indigo-400 mb-6">
+              Great job! Your resume is strong in these essential skills for the role:
             </div>
-            <div className="flex flex-wrap gap-2">
-              {['Strategic Planning', 'Project Management', 'Team Leadership', 'Data Analysis', 'Client Relations'].map(keyword => (
-                <span key={keyword} className="px-3 py-1 text-sm bg-blue-600/50 text-blue-300 rounded-full font-medium">
+            <div className="flex flex-wrap gap-4">
+              {['Strategic Planning', 'Project Management', 'Analytical Thinking', 'Team Leadership', 'Effective Communication'].map(keyword => (
+                <span key={keyword} className="px-4 py-2 font-light text-sm bg-blue-600/50 text-blue-200 rounded-full ">
                   {keyword}
                 </span>
               ))}
@@ -47,18 +47,19 @@ const Features = () => {
             </div>
             <h3 className="text-xl font-semibold">AI Content Writer</h3>
           </div>
-          <p className="text-gray-400 mb-6">
-            AI writes metrics-driven resume content for you, focused on the skills and experience that recruiters are actually looking for.
+          <p className="text-gray-400 mb-6 text-justify">
+            Leverage AI to generate metrics-driven, recruiter-focused resume content that highlights your skills and accomplishments with precision and impact.
           </p>
 
           {/* 模拟内容卡片 */}
           <div className="bg-gray-800 p-6 rounded-lg shadow-xl">
-            <div className="text-sm font-medium text-gray-300 mb-3">
+            <div className="text-sm font-medium text-green-400 mb-6">
               What did you accomplish at the company?
             </div>
-            <ul className="text-gray-400 list-disc ml-5 space-y-2">
-              <li>Increased team productivity by 37% through implementation of agile methodologies and streamlined workflows</li>
-            </ul>
+            <ul className="text-gray-400 font-light list-disc ml-5 space-y-2 text-left">
+              <li>Led the development of a cloud-based data analytics platform, coordinating a cross-functional team of 8 engineers. Delivered the project 3 weeks ahead of schedule, increasing data processing efficiency by 45% and enabling actionable insights for business stakeholders, resulting in a 12% boost in quarterly revenue.</li>
+              <li>Implemented automated testing pipelines for the web application, reducing deployment errors by 60% and cutting release cycles from two weeks to four days. Optimized key data processing algorithms, improving system response time by 35% and enhancing overall user experience.</li>
+              </ul>
           </div>
         </div>
 
@@ -69,10 +70,10 @@ const Features = () => {
             <div className="p-3 rounded-full bg-purple-700/50 mr-4">
               <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.515-.515 1.348-.515 1.863 0l.51.51c.324.324.77.49 1.226.49h1.016c.86 0 1.558.698 1.558 1.558v1.016c0 .456.166.902.49 1.226l.51.51c.515.515.515 1.348 0 1.863l-.51.51c-.324.324-.49.77-.49 1.226v1.016c0 .86-.698 1.558-1.558 1.558h-1.016c-.456 0-.902.166-1.226.49l-.51.51c-.515.515-1.348.515-1.863 0l-.51-.51c-.324-.324-.77-.49-1.226-.49h-1.016c-.86 0-1.558-.698-1.558-1.558v-1.016c0-.456-.166-.902-.49-1.226l-.51-.51c-.515-.515-.515-1.348 0-1.863l.51-.51c.324-.324.49-.77.49-1.226v-1.016c0-.86.698-1.558 1.558-1.558h1.016c.456 0 .902-.166 1.226-.49l.51-.51z"></path></svg>
             </div>
-            <h3 className="text-xl font-semibold">Design Control</h3>
+            <h3 className="text-xl font-semibold">Smart Resume Formatting</h3>
           </div>
-          <p className="text-gray-400 mb-6">
-            Easily design a fully ATS-optimized resume in a few clicks. Choose colors, formatting, font sizing, pictures, and more.
+          <p className="text-gray-400 mb-6 text-justify">
+            Enter your info and instantly get a professional, ATS-friendly resume—no templates or manual tweaks needed.
           </p>
 
 
@@ -85,7 +86,14 @@ const Features = () => {
               <div className="w-8 h-8 rounded-full bg-orange-500"></div>
               <div className="w-8 h-8 rounded-full bg-yellow-500"></div>
               <div className="w-8 h-8 rounded-full bg-gray-500"></div>
+              
             </div>
+            <ul className="text-gray-400 font-light mt-4 list-disc ml-5 space-y-2 text-left">
+                <li>Automatic Layouts</li>
+                <li>ATS-Friendly</li>
+                <li>Template-Free</li>
+                <li>Time-Saving</li>
+              </ul>
           </div>
         </div>
 
@@ -98,8 +106,8 @@ const Features = () => {
             </div>
             <h3 className="text-xl font-semibold">Resumate Score</h3>
           </div>
-          <p className="text-gray-400 mb-6">
-            Get your resume rated across 23 key metrics that help you pass Applicant Tracking Systems and impress recruiters.
+          <p className="text-gray-400 mb-6 text-justify">
+            While you wait, hundreds of AI “experts” tirelessly analyze your resume through hundreds of model iterations, evaluating <span className='font-bold'>102</span> key metrics to ensure ATS compliance and maximize recruiter impact.
           </p>
 
 
