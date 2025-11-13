@@ -49,7 +49,7 @@ const data = {
 
   ],
   navMain: [
-    
+
     {
       title: "AI Resume",
       url: "#",
@@ -61,12 +61,9 @@ const data = {
         },
         {
           title: "Enhance Resume",
-          url: "#",
+          url: "/dashboard/enhance",
         },
-        {
-          title: "功能3",
-          url: "#",
-        },
+
       ],
     },
     {
@@ -74,27 +71,21 @@ const data = {
       url: "#",
       icon: BookOpen,
       items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
+
         {
           title: "Get Started",
-          url: "#",
+          url: "/dashboard",
         },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
+
         {
           title: "Changelog",
           url: "#",
         },
       ],
     },
-    
+
   ],
-  
+
 }
 
 export function AppSidebar({
@@ -107,7 +98,7 @@ export function AppSidebar({
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        
+
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

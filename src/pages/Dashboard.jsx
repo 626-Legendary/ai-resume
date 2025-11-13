@@ -17,6 +17,7 @@ import {
 import { Routes, Route } from "react-router-dom";
 import DashboardHome from '@/components/dashboard/DashboardHome'
 import DashboardCreate from '@/components/dashboard/DashboardCreate'
+import DashboardEnhance from '@/components/dashboard/DashboardEnhance'
 const Dashboard = () => {
   return (
     <SidebarProvider>
@@ -33,14 +34,15 @@ const Dashboard = () => {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Building Your Application
-                  </BreadcrumbLink>
+                  FairStart <span
+                    className="font-bold"
+                    
+                  >
+                    Beta
+                  </span>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                </BreadcrumbItem>
+
+
               </BreadcrumbList>
             </Breadcrumb>
 
@@ -51,7 +53,7 @@ const Dashboard = () => {
         <Routes>
           <Route path="/" element={<DashboardHome />} />
           <Route path="create" element={<DashboardCreate />} />
-
+          <Route path="enhance" element={<DashboardEnhance />} />
         </Routes>
         {/* <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           <div className="grid auto-rows-min gap-4 md:grid-cols-3">

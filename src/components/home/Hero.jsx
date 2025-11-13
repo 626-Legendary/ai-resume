@@ -5,23 +5,23 @@ import { Link } from 'react-router-dom';
 
 const Hero = () => {
   return (
-    // 容器：垂直内边距调整为 sm:py-24 和 lg:py-40，提供更优的视觉平衡
+
     <div className='mx-auto px-4 py-20 sm:py-28 lg:py-40 border-b border-gray-800 text-center text-white'>
 
-      {/* 标签组：在小屏幕上使用 flex-wrap 换行，并调整间距 */}
+
       <div className='flex justify-center flex-wrap gap-x-3 gap-y-3 mb-8'>
 
-        {/* Tag 1: Application Server */}
+
         <div className='inline-flex items-center bg-gray-800 rounded-full px-3 py-1 text-xs text-gray-300'>
           <span className='bg-green-500 h-2 w-2 rounded-full mr-2'></span>Application Server
         </div>
 
-        {/* Tag 2: Database Server */}
+
         <div className='inline-flex items-center bg-gray-800 rounded-full px-3 py-1 text-xs text-gray-300'>
           <span className='bg-amber-500 h-2 w-2 rounded-full mr-2'></span>Database Server
         </div>
 
-        {/* Tag 3: AI Inference Engine */}
+
         <div className='inline-flex items-center bg-gray-800 rounded-full px-3 py-1 text-xs text-gray-300'>
           <span className='bg-red-500 h-2 w-2 rounded-full mr-2'></span>AI Inference Engine
         </div>
@@ -29,8 +29,8 @@ const Hero = () => {
 
 
       {/* 主标题：移动端 4xl，中屏幕 md:text-6xl，大屏幕 lg:text-7xl */}
-      <h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-snug sm:leading-tight'>
-        AI-Powered Resumes <br />
+      <h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-8 leading-snug sm:leading-tight'>
+        AI-Powered Resumes !!!! <br />
         <span className='bg-clip-text text-transparent bg-linear-to-r from-blue-500 to-green-500'>
           That Gets You Hired
         </span>

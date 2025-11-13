@@ -137,8 +137,6 @@ const Features = () => {
     <ReactCompareImage 
         leftImage="/resumebad.jpg" 
         rightImage="/resumegood.jpg" 
-        // 建议添加一个延迟加载的属性，防止首次渲染阻塞
-        // 这需要组件支持，但您可以手动实现：
         loading="lazy" 
     />
 </div>

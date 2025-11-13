@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
-import { PlusCircle, Trash2 } from "lucide-react"; // 导入新增和删除图标
+import { PlusCircle, Trash2 } from "lucide-react"; 
 
 // 证书表单的字段配置
 const CERTIFICATE_FIELDS = [

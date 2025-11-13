@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Logo from "../../assets/Fs.png";
+import Logo from "../../assets/Fs_w.png";
 import { Github, Menu, X } from "lucide-react";
 import { Button } from "../ui/button";
 
@@ -22,11 +22,11 @@ const Navbar = () => {
           <img
             src={Logo}
             alt="FairStart Logo"
-            className="w-10 h-10 rounded-full object-cover"
+            className="w-10 h-10  object-cover"
           />
-          <span className="text-xl font-bold text-blue-400 tracking-wider">
+          <h2 className="text-xl font-bold text-blue-400 tracking-wider">
             FairStart
-          </span>
+          </h2>
         </Link>
 
         {/* 中间：桌面导航 */}

@@ -1,5 +1,5 @@
 import React from 'react'
-
+import AILongProcessSimulator from './AILongProcessSimulator'
 const DashboardHome = () => {
   return (
     <div>HOME
@@ -9,11 +9,12 @@ const DashboardHome = () => {
       </div>
       <div className="">
         <div className="left">
-          {/*表格填写基本信息*/ }
+          {/*表格填写基本信息*/}
         </div>
         <div className="right">
-          {/* 预览简历 */ }
+          {/* 预览简历 */}
         </div>
+        <AILongProcessSimulator></AILongProcessSimulator>
       </div>
     </div>
   )
