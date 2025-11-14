@@ -7,6 +7,7 @@ import Plans from '../components/home/Plans.jsx'
 import Team from '../components/home/Team.jsx'
 import Footer from '../components/home/Footer.jsx'
 import Contact from '../components/home/Contact.jsx'
+import ToolLogos from '@/components/home/ToolLogos.jsx'
 
 
 const Home = () => {
@@ -24,6 +25,7 @@ const Home = () => {
         <FAQ />
         <Team />
         {/* <Contact /> */}
+        <ToolLogos />
       </main>
       
       <Footer />

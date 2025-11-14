@@ -14,7 +14,7 @@ const Footer = () => {
         
 
         <div className='mb-6'>
-          <div className='text-3xl font-bold text-white mb-2'>
+          <div className='text-3xl sm:text-4xl font-bold text-center mb-4 text-white'>
             <span className="text-blue-400">FairStart</span> AI Resume
           </div>
           <p className='text-sm mb-6 text-gray-500'>
@@ -25,7 +25,7 @@ const Footer = () => {
 
         <div className='flex justify-center space-x-6 mb-8 border-b border-gray-700 pb-8'>
           
-          <a href="#" aria-label="GitHub" className='hover:text-white transition duration-300'>
+          <a href="https://github.com/Hackathon-AI-Resume" target='blank' aria-label="GitHub" className='hover:text-white transition duration-300'>
             <Github size={24} />
           </a>
         </div>

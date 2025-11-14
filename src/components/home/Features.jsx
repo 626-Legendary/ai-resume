@@ -17,7 +17,7 @@ const Features = () => {
             <div className="p-3 rounded-full bg-indigo-700/50 mr-4">
               <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c1.657 0 3 .895 3 2s-1.343 2-3 2a3 3 0 00-3 3v2m8-3a7 7 0 10-14 0h14z"></path></svg>
             </div>
-            <h3 className="text-xl font-semibold">AI Keyword Insight</h3>
+            <h3 className="text-xl font-semibold text-left">AI Keyword Insight</h3>
           </div>
           <p className="text-gray-400 mb-6 text-justify">
             Our AI extracts the most important keywords from job descriptions, evaluates their relevance across your industry, and fine-tunes your resume to maximize alignment with recruiter expectations and increase your interview potential.
@@ -45,7 +45,7 @@ const Features = () => {
             <div className="p-3 rounded-full bg-green-700/50 mr-4">
               <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
             </div>
-            <h3 className="text-xl font-semibold">AI Content Writer</h3>
+            <h3 className="text-xl font-semibold text-left">AI Content Writer</h3>
           </div>
           <p className="text-gray-400 mb-6 text-justify">
             Leverage AI to generate metrics-driven, recruiter-focused resume content that highlights your skills and accomplishments with precision and impact.
@@ -70,7 +70,7 @@ const Features = () => {
             <div className="p-3 rounded-full bg-purple-700/50 mr-4">
               <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.515-.515 1.348-.515 1.863 0l.51.51c.324.324.77.49 1.226.49h1.016c.86 0 1.558.698 1.558 1.558v1.016c0 .456.166.902.49 1.226l.51.51c.515.515.515 1.348 0 1.863l-.51.51c-.324.324-.49.77-.49 1.226v1.016c0 .86-.698 1.558-1.558 1.558h-1.016c-.456 0-.902.166-1.226.49l-.51.51c-.515.515-1.348.515-1.863 0l-.51-.51c-.324-.324-.77-.49-1.226-.49h-1.016c-.86 0-1.558-.698-1.558-1.558v-1.016c0-.456-.166-.902-.49-1.226l-.51-.51c-.515-.515-.515-1.348 0-1.863l.51-.51c.324-.324.49-.77.49-1.226v-1.016c0-.86.698-1.558 1.558-1.558h1.016c.456 0 .902-.166 1.226-.49l.51-.51z"></path></svg>
             </div>
-            <h3 className="text-xl font-semibold">Smart Resume Formatting</h3>
+            <h3 className="text-xl font-semibold text-left">Smart Resume Formatting</h3>
           </div>
           <p className="text-gray-400 mb-6 text-justify">
             Enter your info and instantly get a professional, ATS-friendly resume—no templates or manual tweaks needed.
@@ -97,14 +97,14 @@ const Features = () => {
           </div>
         </div>
 
-        {/* --- 功能模块 4: Resumate Score --- */}
+        {/* --- 功能模块 4: Resume Score --- */}
         <div className="flex flex-col">
           <div className="flex items-center mb-4">
 
             <div className="p-3 rounded-full bg-yellow-700/50 mr-4">
               <svg className="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </div>
-            <h3 className="text-xl font-semibold">Resumate Score</h3>
+            <h3 className="text-xl font-semibold text-left">Resume Score</h3>
           </div>
           <p className="text-gray-400 mb-6 text-justify">
             While you wait, hundreds of AI “experts” tirelessly analyze your resume through hundreds of model iterations, evaluating <span className='font-bold'>102</span> key metrics to ensure ATS compliance and maximize recruiter impact.

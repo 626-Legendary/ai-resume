@@ -3,20 +3,42 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Loader2, CheckCircle, ArrowRight, Brain, Zap, HardHat, Database, Server } from 'lucide-react';
+// 导入更多的图标以供使用
+import { 
+    Loader2, CheckCircle, ArrowRight, Brain, Zap, HardHat, Database, Server, 
+    FileText, User, Settings, Send, Globe, Key, AlertTriangle, Code, Download, Cpu 
+} from 'lucide-react';
 
-const TOTAL_DURATION_AVERAGE = 300; // 预计总时长（秒）
+const TOTAL_DURATION_AVERAGE = 30000; // 预计总时长（毫秒），调整为更真实的生成时间 (30秒)
 const INTERVAL_MS = 500; // 进度条更新频率 (毫秒)
 
 const RAW_STAGES = [
-  { id: 1, label: "Initializing connection…", minDuration: 5, maxDuration: 10, icon: ArrowRight },
-  { id: 2, label: "Parsing resume & extracting features…", minDuration: 10, maxDuration: 20, icon: Database },
-  { id: 3, label: "Generating vector embeddings…", minDuration: 25, maxDuration: 35, icon: Brain },
-  { id: 4, label: "Performing semantic match…", minDuration: 55, maxDuration: 65, icon: Zap },
-  { id: 5, label: "Optimizing skill weights & scoring…", minDuration: 55, maxDuration: 65, icon: HardHat },
-  { id: 6, label: "Generating report & results…", minDuration: 35, maxDuration: 45, icon: Server },
-  { id: 7, label: "Serializing & delivering results…", minDuration: 85, maxDuration: 95, icon: Loader2 },
+    { id: 1, label: "Initializing the User Interface and components...", minDuration: 5, maxDuration: 10, icon: Settings }, // 前端
+    { id: 2, label: "Collecting core user inputs (Info & Job Target)...", minDuration: 5, maxDuration: 10, icon: User }, // 前端
+    { id: 3, label: "Validating user input fields locally...", minDuration: 5, maxDuration: 10, icon: CheckCircle }, // 前端
+    { id: 4, label: "Registering the user's selected template and style...", minDuration: 5, maxDuration: 10, icon: FileText }, // 前端
+    { id: 5, label: "Transmitting the data payload to the backend service...", minDuration: 5, maxDuration: 10, icon: Send }, // 前端
+    
+    { id: 6, label: "Receiving the request at the API Gateway...", minDuration: 5, maxDuration: 10, icon: ArrowRight }, // 后端
+    { id: 7, label: "Sanitizing and cleansing raw input data...", minDuration: 5, maxDuration: 10, icon: Database }, // 后端
+    { id: 8, label: "Extracting key entities and tags (Keywords/Skills)...", minDuration: 5, maxDuration: 10, icon: Zap }, // 后端
+    { id: 9, label: "Applying pre-processing rules (e.g., language optimization)...", minDuration: 5, maxDuration: 10, icon: Code }, // 后端
+    { id: 10, label: "Dynamically constructing the LLM Prompt based on criteria...", minDuration: 5, maxDuration: 10, icon: Brain }, // 后端
+    
+    { id: 11, label: "Invoking the LLM API with proper authentication...", minDuration: 25, maxDuration: 35, icon: Key }, // 后端 -> LLM
+    { id: 12, label: "Receiving the prompt and initiating LLM inference...", minDuration: 25, maxDuration: 35, icon: Cpu }, // LLM 服务
+    { id: 13, label: "Generating structured resume content (JSON/Markdown) via LLM...", minDuration: 15, maxDuration: 20, icon: Globe }, // LLM 服务 (耗时最久)
+    { id: 14, label: "Retrieving the raw output from the LLM service...", minDuration: 15, maxDuration: 25, icon: Server }, // 后端
+    { id: 15, label: "Parsing the LLM output and validating its structure...", minDuration: 25, maxDuration: 35, icon: Database }, // 后端
+    
+    { id: 16, label: "Checking content for safety and compliance (Moderation)...", minDuration: 5, maxDuration: 10, icon: AlertTriangle }, // 后端
+    { id: 17, label: "Populating the selected resume template with content...", minDuration: 15, maxDuration: 20, icon: FileText }, // 后端
+    { id: 18, label: "Rendering the final deliverable file (e.g., PDF/HTML)...", minDuration: 15, maxDuration: 20, icon: HardHat }, // 后端
+    { id: 19, label: "Storing the generation result and sending the response...", minDuration: 25, maxDuration: 35, icon: Loader2 }, // 后端
+    { id: 20, label: "Receiving the response and rendering the final document for download...", minDuration: 10, maxDuration: 15, icon: Download }, // 前端
 ];
+
+
 
 
 const useStageProgressRanges = () => {

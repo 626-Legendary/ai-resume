@@ -62,18 +62,6 @@ const splitLines = (str) =>
 
 /**
  * 简历预览组件
- * data 结构：
- * {
- *   PersonalInfo: {},
- *   Summary: string,
- *   Education: [...],
- *   WorkExperience: [...],
- *   Projects: [...],
- *   Skills: string | string[],
- *   Certificates: [...],
- *   hmFeedbackMain: string,
- *   hmFeedbackSummary: string,
- * }
  */
 const ResumePreviewComponent = ({ data }) => {
   const {
@@ -84,8 +72,8 @@ const ResumePreviewComponent = ({ data }) => {
     Projects = [],
     Skills = '',
     Certificates = [],
-    hmFeedbackMain,
-    hmFeedbackSummary,
+    hmFeedbackMain, // 保留字段
+    hmFeedbackSummary, // 保留字段
   } = data || {};
 
   const {
@@ -118,7 +106,7 @@ const ResumePreviewComponent = ({ data }) => {
     return <p className="text-sm text-gray-700">{parts.join(' | ')}</p>;
   };
 
-  /** -------- PDF 导出：保持你现在已经 OK 的效果 -------- */
+  /** -------- PDF 导出：支持多页，避免 overflow 被截断 -------- */
   const handleDownloadPdf = async () => {
     if (!resumeRef.current) return;
 
@@ -149,7 +137,8 @@ const ResumePreviewComponent = ({ data }) => {
         }
         .resume-wrapper {
           width: 794px;
-          height: 1123px;
+          /* 允许内容超出一页高度，用 min-height 代替固定 height */
+          min-height: 1123px;
           padding: 32px;
           background-color: #ffffff;
           color: #111827;
@@ -217,26 +206,57 @@ const ResumePreviewComponent = ({ data }) => {
         useCORS: true,
       });
 
-      const imgData = canvas.toDataURL('image/png');
-
       const pdf = new jsPDF('p', 'mm', 'a4');
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
 
-      const imgWidth = pdfWidth;
-      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-      const y = imgHeight < pdfHeight ? (pdfHeight - imgHeight) / 2 : 0;
+      // 每一页在 canvas 中所对应的像素高度
+      const pageHeightPx = (canvas.width * pdfHeight) / pdfWidth;
 
-      pdf.addImage(
-        imgData,
-        'PNG',
-        0,
-        Math.max(0, y),
-        imgWidth,
-        imgHeight,
-        undefined,
-        'FAST',
-      );
+      let renderedHeight = 0;
+      let pageIndex = 0;
+
+      while (renderedHeight < canvas.height) {
+        const pageCanvas = document.createElement('canvas');
+        pageCanvas.width = canvas.width;
+        pageCanvas.height = Math.min(
+          pageHeightPx,
+          canvas.height - renderedHeight,
+        );
+
+        const ctx = pageCanvas.getContext('2d');
+        ctx.drawImage(
+          canvas,
+          0,
+          renderedHeight,
+          canvas.width,
+          pageCanvas.height,
+          0,
+          0,
+          canvas.width,
+          pageCanvas.height,
+        );
+
+        const imgData = pageCanvas.toDataURL('image/png');
+        const imgHeightMm = (pageCanvas.height * pdfWidth) / canvas.width;
+
+        if (pageIndex > 0) {
+          pdf.addPage();
+        }
+        pdf.addImage(
+          imgData,
+          'PNG',
+          0,
+          0,
+          pdfWidth,
+          imgHeightMm,
+          undefined,
+          'FAST',
+        );
+
+        renderedHeight += pageCanvas.height;
+        pageIndex += 1;
+      }
 
       pdf.save('resume.pdf');
       document.body.removeChild(iframe);
@@ -246,16 +266,13 @@ const ResumePreviewComponent = ({ data }) => {
     }
   };
 
-  /** -------- Word 导出：完全用 data 重建 HTML，避免 <br /> 带来的 ↲ 问题 -------- */
+  /** -------- Word 导出：完全用 data 重建 HTML，Projects 不再展示日期 -------- */
 
-  /** 把当前 data 生成一个专门给 Word 用的 HTML 字符串 */
   const buildWordHtmlDocument = () => {
-    // Summary：每一行一个 <p>，不使用 <br />
     const summaryHtml = splitLines(Summary)
       .map((line) => `<p>${escapeHtml(line)}</p>`)
       .join('');
 
-    // Skills：复用 render 逻辑，最后变成一个长段落
     const skillsString = Array.isArray(Skills)
       ? Skills.join(', ')
       : typeof Skills === 'string'
@@ -269,7 +286,6 @@ const ResumePreviewComponent = ({ data }) => {
       ? `<p>${escapeHtml(skillParts.join(' | '))}</p>`
       : '';
 
-    // Experience：每条经历一个块，每一行 description 作为一个 <li>
     const workHtml = ensureArray(WorkExperience)
       .filter(isArrayItemMeaningful)
       .map((job) => {
@@ -284,7 +300,7 @@ const ResumePreviewComponent = ({ data }) => {
         return `
           <div class="section">
             <p><strong>${escapeHtml(
-              job.jobTitle || '[Job Title]',
+              job.jobTitle || '',
             )}</strong> at ${escapeHtml(job.company || '[Company]')}</p>
             <p class="muted">${escapeHtml(
               job.startDate || '',
@@ -294,17 +310,12 @@ const ResumePreviewComponent = ({ data }) => {
                 ? `<p class="muted">${escapeHtml(location)}</p>`
                 : ''
             }
-            ${
-              bullets
-                ? `<ul>${bullets}</ul>`
-                : ''
-            }
+            ${bullets ? `<ul>${bullets}</ul>` : ''}
           </div>
         `;
       })
       .join('');
 
-    // Education
     const eduHtml = ensureArray(Education)
       .filter(isArrayItemMeaningful)
       .map((edu) => {
@@ -317,9 +328,7 @@ const ResumePreviewComponent = ({ data }) => {
             <p><strong>${escapeHtml(edu.institution || '[Institution]')}</strong></p>
             <p>${escapeHtml(edu.degree || '')} in ${escapeHtml(
           edu.fieldOfStudy || '',
-        )} ${
-          edu.gpa ? `(GPA: ${escapeHtml(edu.gpa)})` : ''
-        }</p>
+        )} ${edu.gpa ? `(GPA: ${escapeHtml(edu.gpa)})` : ''}</p>
             ${
               location
                 ? `<p class="muted">${escapeHtml(location)}</p>`
@@ -333,7 +342,7 @@ const ResumePreviewComponent = ({ data }) => {
       })
       .join('');
 
-    // Projects
+    // ✅ Projects：不再输出日期，只输出项目名 / 组织 / 描述
     const projectsHtml = ensureArray(Projects)
       .filter(isArrayItemMeaningful)
       .map((project) => {
@@ -351,23 +360,12 @@ const ResumePreviewComponent = ({ data }) => {
                 ? `<p class="muted">${escapeHtml(project.organization)}</p>`
                 : ''
             }
-            ${
-              (project.startDate || project.endDate) &&
-              `<p class="muted">${escapeHtml(
-                project.startDate || '',
-              )} - ${escapeHtml(project.endDate || 'Current')}</p>`
-            }
-            ${
-              bullets
-                ? `<ul>${bullets}</ul>`
-                : ''
-            }
+            ${bullets ? `<ul>${bullets}</ul>` : ''}
           </div>
         `;
       })
       .join('');
 
-    // Certificates
     const certHtml = ensureArray(Certificates)
       .filter(isArrayItemMeaningful)
       .map((cert) => {
@@ -395,7 +393,6 @@ const ResumePreviewComponent = ({ data }) => {
       })
       .join('');
 
-    // 顶部姓名 / 联系方式
     const locationLine =
       city && country ? `${city}, ${country}` : city || country || '';
 
@@ -403,7 +400,7 @@ const ResumePreviewComponent = ({ data }) => {
       <h1>${escapeHtml(firstName || '[First Name]')} ${escapeHtml(
       lastName || '[Last Name]',
     )}</h1>
-      <h2>${escapeHtml(jobTitle || '[Job Title]')}</h2>
+      <h2>${escapeHtml(jobTitle || '')}</h2>
       <p class="muted">
         ${escapeHtml(locationLine)}
         ${
@@ -411,7 +408,11 @@ const ResumePreviewComponent = ({ data }) => {
             ? ` ${
                 locationLine ? '| ' : ''
               }${escapeHtml(
-                [phone && `Tel: ${phone}`, email && `Email: ${email}`, linkedin && `LinkedIn: ${linkedin}`]
+                [
+                  phone && `Tel: ${phone}`,
+                  email && `Email: ${email}`,
+                  linkedin && `LinkedIn: ${linkedin}`,
+                ]
                   .filter(Boolean)
                   .join(' | '),
               )}`
@@ -420,25 +421,22 @@ const ResumePreviewComponent = ({ data }) => {
       </p>
     `;
 
-    // Word 专用 CSS（不含 Tailwind、不用 CSS3）
     const wordStyle = `
   <style>
-    /* 让 Word 把页面边距固定到 0.8cm */
     @page {
       margin: 0.8cm 0.8cm 0.8cm 0.8cm;
     }
 
     body {
-      margin: 0;  /* 不在 body 再加 margin，避免双层边距 */
+      margin: 0;
       font-family: Arial, "Microsoft YaHei", sans-serif;
       font-size: 11pt;
       color: #333333;
       line-height: 1.35;
     }
 
-    /* 简历主体宽度靠近整页：18cm 左右基本占满 */
     .resume {
-      width: 20cm;      /* A4 宽度 21cm，减掉左右 1.5~2cm 的边距刚好 */
+      width: 20cm;
       margin: 0 auto;
     }
 
@@ -496,48 +494,23 @@ const ResumePreviewComponent = ({ data }) => {
           <div class="resume">
             ${headerHtml}
 
-            ${
-              Summary
-                ? `<h3>Summary</h3>${summaryHtml}`
-                : ''
-            }
+            ${Summary ? `<h3>Summary</h3>${summaryHtml}` : ''}
 
-            ${
-              Skills
-                ? `<h3>Skills</h3>${skillsHtml}`
-                : ''
-            }
+            ${Skills ? `<h3>Skills</h3>${skillsHtml}` : ''}
 
-            ${
-              workHtml
-                ? `<h3>Experience</h3>${workHtml}`
-                : ''
-            }
+            ${workHtml ? `<h3>Experience</h3>${workHtml}` : ''}
 
-            ${
-              projectsHtml
-                ? `<h3>Projects</h3>${projectsHtml}`
-                : ''
-            }
+            ${projectsHtml ? `<h3>Projects</h3>${projectsHtml}` : ''}
 
-            ${
-              eduHtml
-                ? `<h3>Education</h3>${eduHtml}`
-                : ''
-            }
+            ${eduHtml ? `<h3>Education</h3>${eduHtml}` : ''}
 
-            ${
-              certHtml
-                ? `<h3>Certificates</h3>${certHtml}`
-                : ''
-            }
+            ${certHtml ? `<h3>Certificates</h3>${certHtml}` : ''}
           </div>
         </body>
       </html>
     `;
   };
 
-  /** 真正的 Word 导出：使用上面的 buildWordHtmlDocument */
   const handleDownloadWord = () => {
     const fullHtml = buildWordHtmlDocument();
 
@@ -563,14 +536,12 @@ const ResumePreviewComponent = ({ data }) => {
           variant="outline"
           type="button"
           onClick={handleDownloadPdf}
-          className=""
         >
           Download as PDF
         </Button>
         <Button
           type="button"
           onClick={handleDownloadWord}
-          className=""
         >
           Download as Word
         </Button>
@@ -594,7 +565,7 @@ const ResumePreviewComponent = ({ data }) => {
             {firstName || '[First Name]'} {lastName || '[Last Name]'}
           </h1>
           <h2 className="text-lg font-semibold text-gray-700 mb-1">
-            {jobTitle || '[Job Title]'}
+            {jobTitle || ''}
           </h2>
           <p className="text-sm text-gray-600">
             {city && country ? `${city}, ${country}` : city || country}
@@ -641,7 +612,7 @@ const ResumePreviewComponent = ({ data }) => {
                   <div key={index} className="mb-3">
                     <div className="flex justify-between font-semibold text-sm">
                       <span>
-                        {job.jobTitle || '[Job Title]'} at{' '}
+                        {job.jobTitle || ''} at{' '}
                         {job.company || '[Company]'}
                       </span>
                       <span className="text-gray-600">
@@ -666,50 +637,47 @@ const ResumePreviewComponent = ({ data }) => {
           )}
 
         {ensureArray(Projects).length > 0 &&
-  ensureArray(Projects).some(isArrayItemMeaningful) && (
-    <section className="mb-5">
-      <h3 className="text-lg font-semibold border-b border-gray-700 mb-2">
-        Projects
-      </h3>
-      {ensureArray(Projects)
-        .filter(isArrayItemMeaningful)
-        .map((project, index) => (
-          <div key={index} className="mb-3">
-            <div className="flex justify-between font-semibold text-sm">
-              <span>
-                {project.projectName || '[Project Name]'}
-                {project.projectLink && (
-                  <span className="ml-2 text-xs font-normal">
-                    ({project.projectLink})
-                  </span>
-                )}
-              </span>
-              <span className="text-gray-600">
-                {project.startDate} - {project.endDate || 'Current'}
-              </span>
-            </div>
-            <div className="text-xs text-gray-600 mb-1">
-              {project.organization}
-            </div>
-            
-            <ul className="text-sm text-gray-700 list-disc ml-5 space-y-1">
-              {/* Split the string by line breaks, filter out empty lines, and map to <li> */}
-              {project.description 
-                && project.description // Ensure description exists before splitting
-                .split(/\r?\n/) // Split by line break
-                .filter(line => line.trim() !== '') // Remove empty lines
-                .map((line, lineIndex) => (
-                  <li key={lineIndex} className="list-item-style">
-                    
-                    {line.trim()}
-                  </li>
+          ensureArray(Projects).some(isArrayItemMeaningful) && (
+            <section className="mb-5">
+              <h3 className="text-lg font-semibold border-b border-gray-700 mb-2">
+                Projects
+              </h3>
+              {ensureArray(Projects)
+                .filter(isArrayItemMeaningful)
+                .map((project, index) => (
+                  <div key={index} className="mb-3">
+                    {/* ✅ 这里只保留左侧，不再显示日期 */}
+                    <div className="font-semibold text-sm">
+                      <span>
+                        {project.projectName || '[Project Name]'}
+                        {project.projectLink && (
+                          <span className="ml-2 text-xs font-normal">
+                            ({project.projectLink})
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                    {project.organization && (
+                      <div className="text-xs text-gray-600 mb-1">
+                        {project.organization}
+                      </div>
+                    )}
+
+                    <ul className="text-sm text-gray-700 list-disc ml-5 space-y-1">
+                      {project.description &&
+                        project.description
+                          .split(/\r?\n/)
+                          .filter((line) => line.trim() !== '')
+                          .map((line, lineIndex) => (
+                            <li key={lineIndex} className="list-item-style">
+                              {line.trim()}
+                            </li>
+                          ))}
+                    </ul>
+                  </div>
                 ))}
-            </ul>
-            
-          </div>
-        ))}
-    </section>
-  )}
+            </section>
+          )}
 
         {ensureArray(Education).length > 0 &&
           ensureArray(Education).some(isArrayItemMeaningful) && (
@@ -773,37 +741,6 @@ const ResumePreviewComponent = ({ data }) => {
             </section>
           )}
       </div>
-
-      {/* AI / Hiring Manager 的反馈区域（不导出到 PDF/Word） */}
-      {(hmFeedbackMain || hmFeedbackSummary) && (
-        <div className="hidden lg:block mt-4 p-4 rounded text-justify bg-white shadow-sm">
-          <h3 className="text-lg font-semibold mb-2">
-            AI Hiring Manager Feedback
-          </h3>
-
-          {hmFeedbackMain && (
-            <div className="mb-3">
-              <p className="text-sm font-semibold text-gray-800 mb-1">
-                Overall Feedback:
-              </p>
-              <p className="text-sm font-thin text-gray-700">
-                {formatText(hmFeedbackMain)}
-              </p>
-            </div>
-          )}
-
-          {hmFeedbackSummary && (
-            <div>
-              <p className="text-sm font-semibold text-gray-800 mb-1">
-                Edit Suggestions &amp; History:
-              </p>
-              <p className="text-sm font-thin text-gray-700">
-                {formatText(hmFeedbackSummary)}
-              </p>
-            </div>
-          )}
-        </div>
-      )}
     </>
   );
 };

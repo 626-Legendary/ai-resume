@@ -172,7 +172,7 @@ const DashboardCreate = () => {
     };
 
     const workHtml = sectionRows(data.WorkExperience, job => {
-      return `<div class="row"><div class="title">${safe(job.jobTitle) || '[Job Title]'}</div><div class="meta">${safe(job.company) || ''} ${safe(job.startDate) || ''} - ${safe(job.endDate) || ''}</div><div class="desc">${(safe(job.description)||'').replace(/\n/g, '<br/>')}</div></div>`;
+      return `<div class="row"><div class="title">${safe(job.jobTitle) || ''}</div><div class="meta">${safe(job.company) || ''} ${safe(job.startDate) || ''} - ${safe(job.endDate) || ''}</div><div class="desc">${(safe(job.description)||'').replace(/\n/g, '<br/>')}</div></div>`;
     });
 
     const educationHtml = sectionRows(data.Education, ed => {

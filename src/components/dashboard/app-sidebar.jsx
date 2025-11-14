@@ -1,40 +1,24 @@
-"use client"
 
-import * as React from "react"
-import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
-  Sparkles,
-  Atom,
-} from "lucide-react"
 
-import { NavMain } from "@/components/ui/nav-main"
-import { NavProjects } from "@/components/ui/nav-projects"
-import { NavUser } from "@/components/ui/nav-user"
-import { TeamSwitcher } from "@/components/ui/team-switcher"
+import React, { useMemo } from "react";
+import { Bot, BookOpen, Sparkles, Atom } from "lucide-react";
+
+import { NavMain } from "@/components/ui/nav-main";
+import { NavProjects } from "@/components/ui/nav-projects";
+import { NavUser } from "@/components/ui/nav-user";
+import { TeamSwitcher } from "@/components/ui/team-switcher";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
-// This is sample data.
-const data = {
-  user: {
-    name: "Zexiang",
-    email: "zhangzexiang626@gmail.com",
-    avatar: "@/src/assets/team/zexiang.jpg",
-  },
+import { useAuth } from "../../context/AuthContext"; // 按你的路径调
+
+// 静态导航数据（跟用户无关）
+const navConfig = {
   teams: [
     {
       name: "Core AI",
@@ -46,24 +30,15 @@ const data = {
       logo: Atom,
       plan: "Pro",
     },
-
   ],
   navMain: [
-
     {
       title: "AI Resume",
       url: "#",
       icon: Bot,
       items: [
-        {
-          title: "Create Resume",
-          url: "/dashboard/create",
-        },
-        {
-          title: "Enhance Resume",
-          url: "/dashboard/enhance",
-        },
-
+        { title: "Create Resume", url: "/dashboard/create" },
+        { title: "Enhance Resume", url: "/dashboard/enhance" },
       ],
     },
     {
@@ -71,38 +46,55 @@ const data = {
       url: "#",
       icon: BookOpen,
       items: [
-
-        {
-          title: "Get Started",
-          url: "/dashboard",
-        },
-
-        {
-          title: "Changelog",
-          url: "#",
-        },
+        { title: "Get Started", url: "/dashboard" },
+        { title: "Changelog", url: "#" },
       ],
     },
-
   ],
+};
 
-}
+export function AppSidebar({ ...props }) {
+  const { user, loading, isAuthenticated } = useAuth();
 
-export function AppSidebar({
-  ...props
-}) {
+
+  const sidebarUser = useMemo(() => {
+    if (loading) {
+      return {
+        name: "Authorized User",
+        email: "Loading...",
+        avatar: undefined,
+      };
+    }
+
+    if (!isAuthenticated || !user) {
+      return {
+        name: "Unauthenticated User",
+        email: "guest@example.com",
+        avatar: undefined,
+      };
+    }
+
+    return {
+      name: "Authorized User", // 固定
+      email: user.email,   
+      avatar: undefined,
+    };
+  }, [loading, isAuthenticated, user]);
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher teams={navConfig.teams} />
       </SidebarHeader>
-      <SidebarContent>
-        <NavMain items={data.navMain} />
 
+      <SidebarContent>
+        <NavMain items={navConfig.navMain} />
       </SidebarContent>
+
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={sidebarUser} />
       </SidebarFooter>
+
       <SidebarRail />
     </Sidebar>
   );

@@ -23,12 +23,7 @@ const techLogos = [
   { node: <SiSalesforce />, title: "Salesforce", href: "https://www.salesforce.com" },
 ];
 
-// Alternative with image sources
-const imageLogos = [
-    { src: "/logos/company1.png", alt: "Company 1", href: "https://company1.com" },
-    { src: "/logos/company2.png", alt: "Company 2", href: "https://company2.com" },
-    { src: "/logos/company3.png", alt: "Company 3", href: "https://company3.com" },
-];
+
 
 function TechLogos() {
     return (
