@@ -52,6 +52,7 @@ Unlike traditional resume forms, FairStart’s frontend acts as a **full-feature
     </tr>
   </table>
 </p>
+
 ---
 
 # ✨ Core Frontend Features & Architecture
